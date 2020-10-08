@@ -30,75 +30,82 @@ function operate (a, b, operator) {
 let button = document.getElementById('buttons');
 console.log(button);
 let display = document.getElementById('display');
-button.addEventListener('click', updateDisplay);
+button.addEventListener('click', operate);
 let num1 = '';
 let num2 = '';
 let operator = '';
 let equalRun = '';
 
-function updateDisplay(event) {
-  if (event.target.id == '=') {
-    console.log(operator);
-    if (operator != '') {
-      if (operator == '+') {
-        console.log(num1);
-        console.log(num2);
-        console.log(operator);
-        operator = '';
-        display.value = add(num1,num2);
-        num1 = display.value;
-      }
-    }
+function operate(event) {
+  num1 = num1.replace(/\D/g,'');
+  if (event.target.id == 'clear') {
+    display.value = '';
+    num1 = '';
+    num2 = '';
+    return;
   }
-  
-  if (operator != '') {
+  if (event.target.id == '=' || ((operator != '' && num1 != '' && num2 != '') && (event.target.id == '+' || event.target.id == '-' || event.target.id == '*' || event.target.id == '/'))) {
+    console.log(num1);
+    console.log(num2);
+    console.log(operator);
     if (operator == '+') {
-      num2 = event.target.id;
+      display.value = add(num1,num2);
+    } else if (operator == '-') {
+      display.value = subtract(num1,num2);
+    } else if (operator == '*') {
+      display.value = multiply(num1,num2);
+    } else if (operator == '/') {
+      display.value = divide(num1,num2);
+    }
+    if (event.target.id == '+' || event.target.id == '-' || event.target.id == '*' || event.target.id == '/') {
+        operator = event.target.id;
+    } else {
+      operator = '';
+    }
+    num1 = display.value;
+    num2 = '';
+    return;
+  }
+  if (operator != '') {
+    // if (operator == '+') {
+      // if (event.target.id == '+' && event.target.id == '-' && event.target.id == '*' && event.target.id == '/') {
+      //   operator = event.target.id;
+      //   return;
+      // }
+      if (num2 != '') {
+        num2 +=event.target.id;
+      } else {
+        num2 = event.target.id
+      }
       display.value = num2;
+      return;
     // } else if (operator == '-') {
     //   num2 = event.target.id;
-    //   operator = '';
-    //   display.value = subtract(num1,num2);
-    //   num1 = display.value;
+    //   display.value = num2;
     // } else if (operator == '*') {
     //   num2 = event.target.id;
-    //   operator = '';
-    //   display.value = multiply(num1,num2);
-    //   num1 = display.value;
+    //   display.value = num2;
     // } else if (operator == '/') {
     //   num2 = event.target.id;
-    //   operator = '';
-    //   display.value = divide(num1,num2);
-    //   num1 = display.value;
-    // } else if (operator == '=') {
-    //   num2 = event.target.id;
-    //   operator = '';
-    //   display.value = divide(num1,num2);
-    //   num1 = display.value;
-    }
+    //   display.value = num2;
+    // }
   }
   if (operator == '') {
-    if (event.target.id == 'clear') {
-      display.value = '';
-    } else if (event.target.id == '+') {
+    if (event.target.id == '+') {
       operator = '+';
-      display.value = operator;
     } else if (event.target.id == '-') {
       operator = '-';
-      display.value = operator;
     } else if (event.target.id == '*') {
       operator = '*';
-      display.value = operator;
     } else if (event.target.id == '/') {
       operator = '/';
-      display.value = operator;
-    } else {
+    } else if (num1 == '') {
       num1 = event.target.id;
-      if (event.target.id == '=') {
-        
-      } else {
+      display.value = event.target.id
+    } else {
       display.value += event.target.id;
-      }
+      num1 = display.value;
     }
+    return;
   }
 }
