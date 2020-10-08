@@ -11,7 +11,7 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
-  return a / b;
+  return Math.round(a / b * 100) / 100;
 }
 
 function operate (a, b, operator) {
@@ -44,10 +44,16 @@ function operate(event) {
     num2 = '';
     return;
   }
+  if (num1 == '0' && num2 == '0' && operator == '/') {
+    return display.value = 'Whoa there';
+  }
   if (event.target.id == '=' || ((operator != '' && num1 != '' && num2 != '') && (event.target.id == '+' || event.target.id == '-' || event.target.id == '*' || event.target.id == '/'))) {
     console.log(num1);
     console.log(num2);
     console.log(operator);
+    if (event.target.id == '=' && num2 == '') {
+      return;
+    }
     if (operator == '+') {
       display.value = add(num1,num2);
     } else if (operator == '-') {
@@ -67,11 +73,6 @@ function operate(event) {
     return;
   }
   if (operator != '') {
-    // if (operator == '+') {
-      // if (event.target.id == '+' && event.target.id == '-' && event.target.id == '*' && event.target.id == '/') {
-      //   operator = event.target.id;
-      //   return;
-      // }
       if (num2 != '') {
         num2 +=event.target.id;
       } else {
@@ -79,16 +80,6 @@ function operate(event) {
       }
       display.value = num2;
       return;
-    // } else if (operator == '-') {
-    //   num2 = event.target.id;
-    //   display.value = num2;
-    // } else if (operator == '*') {
-    //   num2 = event.target.id;
-    //   display.value = num2;
-    // } else if (operator == '/') {
-    //   num2 = event.target.id;
-    //   display.value = num2;
-    // }
   }
   if (operator == '') {
     if (event.target.id == '+') {
